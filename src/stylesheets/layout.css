@@ -51,9 +51,11 @@ button:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 999;
 }
 
 .spinner-border {
   width: 60px;
   height: 60px;
+  position: relative;
 }

@@ -31,8 +31,8 @@ const ProductInfo = () => {
         <div className='row justify-content-center'>
           <div className='col-md-8'>
             {product && (<div>
-              <p><b>{product.name}</b></p>
-              <img src={product.imageURL} alt="product image" className='product-info-img'/>
+              <p><b>{product.title}</b></p>
+              <img src={product.image} alt="product image" className='product-info-img'/>
               <hr />
               <p>{product.description}</p>
               <div className='d-flex justify-content-end my-3'>

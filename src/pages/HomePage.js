@@ -5,11 +5,14 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 import fireDB from '../fireConfig';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Products } from './all-products';
 
 const HomePage = () => {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchKey, setSearchKey] = useState("");
+  const [filterType, setFilterType] = useState("");
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -48,17 +51,41 @@ const HomePage = () => {
     dispatch({type: 'ADD_TO_CART', payload: product})
   }
 
+  // const clickHandler = async() => {
+  //   Products.map(async(product) => {
+  //     try {
+  //       await addDoc(collection(fireDB, "products"), product);
+  //       console.log("Yeah Added");
+  //     } catch(err) {
+  //       console.log(err);
+  //     }
+  //   })
+  // }
   return (
     <Layout loading={loading}>
       <div className='container'>
+        <div className='d-flex w-50 my-3'>
+          <input type="text" className='form-control mx-2' placeholder='search items' value={searchKey} onChange={(e) => setSearchKey(e.target.value) }/>
+          <select className='form-control' value={filterType} onChange={(e) => setFilterType(e.target.value) }>
+            <option value="">All</option>
+            <option value="men's clothing">Men's Clothing</option>
+            <option value="women's clothing">Women's Clothing</option>
+            <option value="electronics">Electonics</option>
+            <option value="jewelery">Jewelery</option>
+          </select>
+          {/* <button onClick={clickHandler}>Add Items</button> */}
+        </div>
         <div className='row'>
-          {products.map((product, ind) => {
+          {products
+          .filter(obj => obj.title.toLowerCase().includes(searchKey.toLowerCase()))
+          .filter(obj => obj.category.includes(filterType))
+          .map((product, ind) => {
             return <div className='col-md-4' key = {ind}>
               <div className='m-2 p-1 product position-relative'>
                 <div className='product-content'>
-                  <p>{product.name}</p>
+                  <p>{product.title}</p>
                   <div className='text-center'>
-                    <img src={product.imageURL} alt="Product Image" className='product-img'/>
+                    <img src={product.image} alt="Product Image" className='product-img'/>
                   </div>
                 </div>
                 <div className='product-actions'>
